@@ -16,10 +16,8 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
     return () => window.removeEventListener('contextmenu', preventContextMenu);
   }, []);
 
-  // Calculate grid dimensions
-  const gridWidth = grid[0].length * 50; // 50px is the cell size
-  const gridHeight = grid.length * 50;
-  const maxHintWidth = Math.max(...rowHints.map(hints => hints.length)) * 40; // Assuming 40px per hint
+  // Calculate hint dimensions
+  const maxHintWidth = Math.max(...rowHints.map(hints => hints.length)) * 40;
   const maxHintHeight = Math.max(...colHints.map(hints => hints.length)) * 40;
 
   return (

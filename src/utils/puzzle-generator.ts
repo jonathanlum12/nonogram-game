@@ -44,6 +44,7 @@ export const generatePuzzle = (settings: GameSettings): GameState => {
     rowHints,
     colHints,
     isComplete: false,
-    timer: 0
+    timer: 0,
+    mistakes: 0
   };
 }; 
