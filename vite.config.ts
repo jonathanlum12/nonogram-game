@@ -18,6 +18,10 @@ export default defineConfig({
     emptyOutDir: true,
     // Add cache busting
     sourcemap: true,
-    manifest: true
+    manifest: true,
+    // Ensure assets are handled correctly
+    assetsDir: 'assets',
+    // Properly resolve asset URLs
+    assetsInlineLimit: 0
   }
 }); 

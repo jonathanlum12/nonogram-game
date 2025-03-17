@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Board } from './components/Board';
 import { GameState, GameSettings, CellState } from './types';
 import { generatePuzzle } from './utils/puzzle-generator';
-import logo from './assets/nonogram-logo.png';
+import nonogramLogo from './assets/nonogram-logo.png?url';
 
 const DEFAULT_SETTINGS: GameSettings = {
   size: 10,
@@ -74,7 +74,7 @@ export const App: React.FC = () => {
     <div className="container">
       <header className="header">
         <img 
-          src={logo} 
+          src={nonogramLogo} 
           alt="Nonogram Logo" 
           style={{ 
             width: '160px', 
