@@ -17,6 +17,9 @@ export default defineConfig({
     sourcemap: true,
     manifest: true
   },
+  optimizeDeps: {
+    exclude: []
+  },
   server: {
     headers: {
       'Content-Type': 'application/javascript'
