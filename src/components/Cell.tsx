@@ -15,9 +15,9 @@ export const Cell: React.FC<CellProps> = ({ state, onClick, onContextMenu, onMou
       case 'filled':
         return 'var(--nyt-black)';
       case 'filled-error':
-        return '#E20736';
+        return '#E87E7E';
       case 'marked':
-        return 'var(--nyt-light-blue)';
+        return '#9CDDDA';
       case 'marked-error':
         return '#E87E7E';
       default:
@@ -26,7 +26,7 @@ export const Cell: React.FC<CellProps> = ({ state, onClick, onContextMenu, onMou
   };
 
   const showX = state === 'marked' || state === 'marked-error';
-  const xColor = state === 'marked-error' ? '#E20736' : 'var(--nyt-blue)';
+  const xColor = state === 'marked-error' ? '#A10023' : '#007F82';
 
   return (
     <div
