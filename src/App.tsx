@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Board } from './components/Board';
 import { GameState, GameSettings, CellState } from './types';
 import { generatePuzzle } from './utils/puzzle-generator';
+import logo from './assets/logo.svg';
 
 const DEFAULT_SETTINGS: GameSettings = {
   size: 10,
@@ -72,6 +73,17 @@ export const App: React.FC = () => {
   return (
     <div className="container">
       <header className="header">
+        <img 
+          src={logo} 
+          alt="Nonogram Logo" 
+          style={{ 
+            width: '200px', 
+            height: '200px', 
+            marginBottom: '20px',
+            display: 'block',
+            margin: '0 auto'
+          }} 
+        />
         <h1>Nonogram</h1>
         <div className="stats">
           <div>Time: {formatTime(timer)}</div>
