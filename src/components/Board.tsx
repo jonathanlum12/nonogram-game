@@ -4,7 +4,7 @@ import { GameState, CellState } from '../types';
 
 interface BoardProps {
   gameState: GameState;
-  onCellClick: (row: number, col: number, action: 'fill' | 'mark') => void;
+  onCellClick: (row: number, col: number, action: 'fill' | 'mark', errorState?: CellState) => void;
 }
 
 export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
@@ -50,8 +50,7 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
         onCellClick(row, col, action); // Correct fill
       } else {
         // Incorrect fill - mark as error
-        const newState: CellState = 'filled-error';
-        onCellClick(row, col, action, newState);
+        onCellClick(row, col, action, 'filled-error');
       }
     }
     // For mark action
@@ -62,8 +61,7 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
         onCellClick(row, col, action); // Correct mark
       } else {
         // Incorrect mark - mark as error
-        const newState: CellState = 'marked-error';
-        onCellClick(row, col, action, newState);
+        onCellClick(row, col, action, 'marked-error');
       }
     }
   };
