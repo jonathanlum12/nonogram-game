@@ -25,7 +25,7 @@ export const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [gameState.isComplete]);
 
-  const handleCellClick = (row: number, col: number, action: 'fill' | 'mark') => {
+  const handleCellClick = (row: number, col: number, action: 'fill' | 'mark', errorState?: CellState) => {
     if (gameState.isComplete) return;
 
     setGameState(prev => {
@@ -33,14 +33,12 @@ export const App: React.FC = () => {
       const currentState = newGrid[row][col];
       let newMistakes = prev.mistakes;
 
-      if (action === 'fill') {
-        const newState = currentState === 'filled' ? 'empty' : 'filled';
-        newGrid[row][col] = newState;
-        
-        // Only count mistakes when filling cells
-        if (newState === 'filled' && !prev.solution[row][col]) {
-          newMistakes++;
-        }
+      if (errorState) {
+        // Handle error state
+        newGrid[row][col] = errorState;
+        newMistakes++;
+      } else if (action === 'fill') {
+        newGrid[row][col] = currentState === 'filled' ? 'empty' : 'filled';
       } else {
         newGrid[row][col] = currentState === 'marked' ? 'empty' : 'marked';
       }
@@ -52,9 +50,10 @@ export const App: React.FC = () => {
 
   const checkWinCondition = (grid: CellState[][], solution: boolean[][]): boolean => {
     return grid.every((row, i) =>
-      row.every((cell, j) =>
-        (cell === 'filled') === solution[i][j]
-      )
+      row.every((cell, j) => {
+        const effectiveState = cell.endsWith('-error') ? cell.replace('-error', '') as CellState : cell;
+        return (effectiveState === 'filled') === solution[i][j];
+      })
     );
   };
 

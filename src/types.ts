@@ -1,4 +1,4 @@
-export type CellState = 'empty' | 'filled' | 'marked';
+export type CellState = 'empty' | 'filled' | 'marked' | 'filled-error' | 'marked-error';
 
 export interface GameState {
   grid: CellState[][];

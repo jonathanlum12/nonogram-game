@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Cell } from './Cell';
-import { GameState } from '../types';
+import { GameState, CellState } from '../types';
 
 interface BoardProps {
   gameState: GameState;
@@ -18,16 +18,54 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
 
   // Check if a row is complete
   const isRowComplete = (rowIndex: number): boolean => {
-    return grid[rowIndex].every((cell, colIndex) => 
-      (cell === 'filled') === solution[rowIndex][colIndex]
-    );
+    return grid[rowIndex].every((cell, colIndex) => {
+      const cellState = cell.endsWith('-error') ? cell.replace('-error', '') as CellState : cell;
+      return (cellState === 'filled') === solution[rowIndex][colIndex];
+    });
   };
 
   // Check if a column is complete
   const isColumnComplete = (colIndex: number): boolean => {
-    return grid.every((row, rowIndex) => 
-      (row[colIndex] === 'filled') === solution[rowIndex][colIndex]
-    );
+    return grid.every((row, rowIndex) => {
+      const cellState = row[colIndex].endsWith('-error') ? row[colIndex].replace('-error', '') as CellState : row[colIndex];
+      return (cellState === 'filled') === solution[rowIndex][colIndex];
+    });
+  };
+
+  // Handle cell click with error checking
+  const handleCellClick = (row: number, col: number, action: 'fill' | 'mark') => {
+    const currentState = grid[row][col];
+    const shouldBeFilled = solution[row][col];
+    
+    // If it's already in an error state, don't allow changes
+    if (currentState.endsWith('-error')) {
+      return;
+    }
+
+    // For fill action
+    if (action === 'fill') {
+      if (currentState === 'filled') {
+        onCellClick(row, col, action); // Allow unfilling
+      } else if (shouldBeFilled) {
+        onCellClick(row, col, action); // Correct fill
+      } else {
+        // Incorrect fill - mark as error
+        const newState: CellState = 'filled-error';
+        onCellClick(row, col, action, newState);
+      }
+    }
+    // For mark action
+    else if (action === 'mark') {
+      if (currentState === 'marked') {
+        onCellClick(row, col, action); // Allow unmarking
+      } else if (!shouldBeFilled) {
+        onCellClick(row, col, action); // Correct mark
+      } else {
+        // Incorrect mark - mark as error
+        const newState: CellState = 'marked-error';
+        onCellClick(row, col, action, newState);
+      }
+    }
   };
 
   // Calculate hint dimensions
@@ -133,10 +171,10 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
             <Cell
               key={`${rowIndex}-${colIndex}`}
               state={cell}
-              onClick={() => onCellClick(rowIndex, colIndex, 'fill')}
+              onClick={() => handleCellClick(rowIndex, colIndex, 'fill')}
               onContextMenu={(e) => {
                 e.preventDefault();
-                onCellClick(rowIndex, colIndex, 'mark');
+                handleCellClick(rowIndex, colIndex, 'mark');
               }}
             />
           ))
