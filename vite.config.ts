@@ -5,7 +5,6 @@ export default defineConfig({
   plugins: [react()],
   base: '/nonogram-game/',
   build: {
-    // Generate a unique hash for asset filenames
     rollupOptions: {
       output: {
         manualChunks: undefined,
@@ -14,14 +13,13 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
-    // Clear the outDir before building
     emptyOutDir: true,
-    // Add cache busting
     sourcemap: true,
-    manifest: true,
-    // Ensure assets are handled correctly
-    assetsDir: 'assets',
-    // Properly resolve asset URLs
-    assetsInlineLimit: 0
+    manifest: true
+  },
+  server: {
+    headers: {
+      'Content-Type': 'application/javascript'
+    }
   }
 }); 
