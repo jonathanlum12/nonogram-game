@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Board } from './components/Board';
 import { GameState, GameSettings, CellState } from './types';
 import { generatePuzzle } from './utils/puzzle-generator';
-import logo from './assets/logo.svg';
+import logo from './assets/nonogram-logo.png';
 
 const DEFAULT_SETTINGS: GameSettings = {
   size: 10,
@@ -77,8 +77,8 @@ export const App: React.FC = () => {
           src={logo} 
           alt="Nonogram Logo" 
           style={{ 
-            width: '200px', 
-            height: '200px', 
+            width: '160px', 
+            height: '160px', 
             marginBottom: '20px',
             display: 'block',
             margin: '0 auto'

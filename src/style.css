@@ -44,8 +44,9 @@ body {
   font-family: var(--nyt-title);
   font-size: 3rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .board-container {
