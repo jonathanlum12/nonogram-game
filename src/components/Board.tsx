@@ -8,13 +8,27 @@ interface BoardProps {
 }
 
 export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
-  const { grid, rowHints, colHints } = gameState;
+  const { grid, rowHints, colHints, solution } = gameState;
 
   useEffect(() => {
     const preventContextMenu = (e: Event) => e.preventDefault();
     window.addEventListener('contextmenu', preventContextMenu);
     return () => window.removeEventListener('contextmenu', preventContextMenu);
   }, []);
+
+  // Check if a row is complete
+  const isRowComplete = (rowIndex: number): boolean => {
+    return grid[rowIndex].every((cell, colIndex) => 
+      (cell === 'filled') === solution[rowIndex][colIndex]
+    );
+  };
+
+  // Check if a column is complete
+  const isColumnComplete = (colIndex: number): boolean => {
+    return grid.every((row, rowIndex) => 
+      (row[colIndex] === 'filled') === solution[rowIndex][colIndex]
+    );
+  };
 
   // Calculate hint dimensions
   const maxHintWidth = Math.max(...rowHints.map(hints => hints.length)) * 40;
@@ -51,12 +65,18 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
         }}
       >
         {colHints.map((hints, col) => (
-          <div key={col} className="hints" style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center',
-            gap: '2px'
-          }}>
+          <div 
+            key={col} 
+            className="hints" 
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center',
+              gap: '2px',
+              opacity: isColumnComplete(col) ? 0.3 : 1,
+              transition: 'opacity 0.3s ease'
+            }}
+          >
             {hints.map((hint, i) => (
               <div key={i} style={{ 
                 minHeight: '20px',
@@ -81,7 +101,15 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
         }}
       >
         {rowHints.map((hints, row) => (
-          <div key={row} className="hints" style={{ height: 'var(--grid-size)' }}>
+          <div 
+            key={row} 
+            className="hints" 
+            style={{ 
+              height: 'var(--grid-size)',
+              opacity: isRowComplete(row) ? 0.3 : 1,
+              transition: 'opacity 0.3s ease'
+            }}
+          >
             {hints.map((hint, i) => (
               <span key={i}>{hint}</span>
             ))}
