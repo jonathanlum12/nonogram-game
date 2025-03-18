@@ -6,17 +6,15 @@ export default defineConfig({
   base: '/nonogram-game/',
   build: {
     outDir: 'dist',
-    emptyOutDir: true,
-    sourcemap: true,
-    manifest: true,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
-    }
+    },
+    emptyOutDir: true,
+    sourcemap: true
   },
   optimizeDeps: {
     exclude: []

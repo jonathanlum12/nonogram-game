@@ -19,26 +19,16 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
   // Check if a row is complete
   const isRowComplete = (rowIndex: number): boolean => {
     return grid[rowIndex].every((cell, colIndex) => {
-      if (solution[rowIndex][colIndex]) {
-        // For cells that should be filled
-        return cell === 'filled' || cell === 'filled-error';
-      } else {
-        // For cells that should be empty
-        return cell === 'empty' || cell === 'marked' || cell === 'marked-error';
-      }
+      const cellState = cell.endsWith('-error') ? cell.replace('-error', '') as CellState : cell;
+      return (cellState === 'filled') === solution[rowIndex][colIndex];
     });
   };
 
   // Check if a column is complete
   const isColumnComplete = (colIndex: number): boolean => {
     return grid.every((row, rowIndex) => {
-      if (solution[rowIndex][colIndex]) {
-        // For cells that should be filled
-        return row[colIndex] === 'filled' || row[colIndex] === 'filled-error';
-      } else {
-        // For cells that should be empty
-        return row[colIndex] === 'empty' || row[colIndex] === 'marked' || row[colIndex] === 'marked-error';
-      }
+      const cellState = row[colIndex].endsWith('-error') ? row[colIndex].replace('-error', '') as CellState : row[colIndex];
+      return (cellState === 'filled') === solution[rowIndex][colIndex];
     });
   };
 
@@ -47,26 +37,31 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
     const currentState = grid[row][col];
     const shouldBeFilled = solution[row][col];
     
+    // If it's already in an error state, don't allow changes
+    if (currentState.endsWith('-error')) {
+      return;
+    }
+
     // For fill action
     if (action === 'fill') {
-      if (currentState === 'filled' || currentState === 'filled-error') {
-        onCellClick(row, col, 'fill'); // Allow unfilling
+      if (currentState === 'filled') {
+        onCellClick(row, col, action); // Allow unfilling
       } else if (shouldBeFilled) {
-        onCellClick(row, col, 'fill'); // Correct fill
+        onCellClick(row, col, action); // Correct fill
       } else {
         // Incorrect fill - mark as error
-        onCellClick(row, col, 'fill', 'filled-error');
+        onCellClick(row, col, action, 'filled-error');
       }
     }
     // For mark action
     else if (action === 'mark') {
-      if (currentState === 'marked' || currentState === 'marked-error') {
-        onCellClick(row, col, 'mark'); // Allow unmarking
+      if (currentState === 'marked') {
+        onCellClick(row, col, action); // Allow unmarking
       } else if (!shouldBeFilled) {
-        onCellClick(row, col, 'mark'); // Correct mark
+        onCellClick(row, col, action); // Correct mark
       } else {
         // Incorrect mark - mark as error
-        onCellClick(row, col, 'mark', 'marked-error');
+        onCellClick(row, col, action, 'marked-error');
       }
     }
   };
