@@ -39,9 +39,19 @@ export const App: React.FC = () => {
         newGrid[row][col] = errorState;
         newMistakes++;
       } else if (action === 'fill') {
-        newGrid[row][col] = currentState === 'filled' ? 'empty' : 'filled';
+        // If cell is in error state and being unfilled, reset to empty
+        if (currentState === 'filled-error') {
+          newGrid[row][col] = 'empty';
+        } else {
+          newGrid[row][col] = currentState === 'filled' ? 'empty' : 'filled';
+        }
       } else {
-        newGrid[row][col] = currentState === 'marked' ? 'empty' : 'marked';
+        // If cell is in error state and being unmarked, reset to empty
+        if (currentState === 'marked-error') {
+          newGrid[row][col] = 'empty';
+        } else {
+          newGrid[row][col] = currentState === 'marked' ? 'empty' : 'marked';
+        }
       }
 
       const isComplete = checkWinCondition(newGrid, prev.solution);

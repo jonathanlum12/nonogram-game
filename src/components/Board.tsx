@@ -47,31 +47,26 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
     const currentState = grid[row][col];
     const shouldBeFilled = solution[row][col];
     
-    // If it's already in an error state, don't allow changes
-    if (currentState.endsWith('-error')) {
-      return;
-    }
-
     // For fill action
     if (action === 'fill') {
-      if (currentState === 'filled') {
-        onCellClick(row, col, action); // Allow unfilling
+      if (currentState === 'filled' || currentState === 'filled-error') {
+        onCellClick(row, col, 'fill'); // Allow unfilling
       } else if (shouldBeFilled) {
-        onCellClick(row, col, action); // Correct fill
+        onCellClick(row, col, 'fill'); // Correct fill
       } else {
         // Incorrect fill - mark as error
-        onCellClick(row, col, action, 'filled-error');
+        onCellClick(row, col, 'fill', 'filled-error');
       }
     }
     // For mark action
     else if (action === 'mark') {
-      if (currentState === 'marked') {
-        onCellClick(row, col, action); // Allow unmarking
+      if (currentState === 'marked' || currentState === 'marked-error') {
+        onCellClick(row, col, 'mark'); // Allow unmarking
       } else if (!shouldBeFilled) {
-        onCellClick(row, col, action); // Correct mark
+        onCellClick(row, col, 'mark'); // Correct mark
       } else {
         // Incorrect mark - mark as error
-        onCellClick(row, col, action, 'marked-error');
+        onCellClick(row, col, 'mark', 'marked-error');
       }
     }
   };
