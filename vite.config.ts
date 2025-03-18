@@ -5,6 +5,10 @@ export default defineConfig({
   plugins: [react()],
   base: '/nonogram-game/',
   build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    sourcemap: true,
+    manifest: true,
     rollupOptions: {
       output: {
         manualChunks: undefined,
@@ -12,10 +16,7 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
-    },
-    emptyOutDir: true,
-    sourcemap: true,
-    manifest: true
+    }
   },
   optimizeDeps: {
     exclude: []
