@@ -19,16 +19,26 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCellClick }) => {
   // Check if a row is complete
   const isRowComplete = (rowIndex: number): boolean => {
     return grid[rowIndex].every((cell, colIndex) => {
-      const cellState = cell.endsWith('-error') ? cell.replace('-error', '') as CellState : cell;
-      return (cellState === 'filled') === solution[rowIndex][colIndex];
+      if (solution[rowIndex][colIndex]) {
+        // For cells that should be filled
+        return cell === 'filled' || cell === 'filled-error';
+      } else {
+        // For cells that should be empty
+        return cell === 'empty' || cell === 'marked' || cell === 'marked-error';
+      }
     });
   };
 
   // Check if a column is complete
   const isColumnComplete = (colIndex: number): boolean => {
     return grid.every((row, rowIndex) => {
-      const cellState = row[colIndex].endsWith('-error') ? row[colIndex].replace('-error', '') as CellState : row[colIndex];
-      return (cellState === 'filled') === solution[rowIndex][colIndex];
+      if (solution[rowIndex][colIndex]) {
+        // For cells that should be filled
+        return row[colIndex] === 'filled' || row[colIndex] === 'filled-error';
+      } else {
+        // For cells that should be empty
+        return row[colIndex] === 'empty' || row[colIndex] === 'marked' || row[colIndex] === 'marked-error';
+      }
     });
   };
 
