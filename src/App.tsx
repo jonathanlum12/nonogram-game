@@ -52,8 +52,16 @@ export const App: React.FC = () => {
   const checkWinCondition = (grid: CellState[][], solution: boolean[][]): boolean => {
     return grid.every((row, i) =>
       row.every((cell, j) => {
-        const effectiveState = cell.endsWith('-error') ? cell.replace('-error', '') as CellState : cell;
-        return (effectiveState === 'filled') === solution[i][j];
+        // Consider both regular filled and error-filled cells as filled
+        const isCellFilled = cell === 'filled' || cell === 'filled-error';
+        
+        if (solution[i][j]) {
+          // If solution is true, cell must be filled (either normally or as error)
+          return isCellFilled;
+        } else {
+          // If solution is false, cell must be either empty or marked
+          return !isCellFilled;
+        }
       })
     );
   };
