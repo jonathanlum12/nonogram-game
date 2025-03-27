@@ -5,16 +5,17 @@ export default defineConfig({
   plugins: [react()],
   base: '/nonogram-game/',
   build: {
-    outDir: 'dist',
     rollupOptions: {
       output: {
+        manualChunks: undefined,
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     emptyOutDir: true,
-    sourcemap: true
+    sourcemap: true,
+    manifest: true
   },
   optimizeDeps: {
     exclude: []
@@ -22,6 +23,11 @@ export default defineConfig({
   server: {
     headers: {
       'Content-Type': 'application/javascript'
+    }
+  },
+  resolve: {
+    alias: {
+      '@': '/src'
     }
   }
 }); 
